@@ -1,6 +1,7 @@
 ﻿
 using Final.Drivers;
 using Final.Page;
+using Final.Tools;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
@@ -14,8 +15,8 @@ namespace _0602new_tests.tests
 {
     public class TestBase 
     {
-        public static IWebDriver driver;
-        public static FinnNorgePage finnNorge;
+        public static IWebDriver driver; //?
+        public static FinnNorgePage _finnNorge;
 
         [OneTimeSetUp]
 
@@ -23,18 +24,18 @@ namespace _0602new_tests.tests
         {
             driver = AllDrivers.GetChromeDriver();
 
-            finnNorge = new FinnNorgePage(driver);
+            _finnNorge = new FinnNorgePage(driver);
 
         }
 
-        //[TearDown]
-        //public static void SingleTestTearDown()
-        //{
-        //    if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
-        //    {
-        //        MyScreenshot.MakePhoto(driver);
-        //    }
-        //}
+        [TearDown]
+        public static void SingleTestTearDown()
+        {
+            if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
+            {
+                MyScreenshot.MakePhoto(driver);
+            }
+        }
 
         [OneTimeTearDown]
         public static void CloseBrowser()

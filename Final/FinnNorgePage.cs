@@ -1,6 +1,7 @@
 ﻿using Final.Drivers;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,18 @@ namespace Final.Page
 {
     public class FinnNorgePage : PageBase
     {
-        private  IWebElement ChooseCars => driver.FindElement(By.CssSelector(".market - grid__item:nth - child(3) svg"));
-        private  IWebElement CarsInNorway => driver.FindElement(By.ClassName("u-display-inline-block u-pv8 u-no-break)"));
+
+        private IWebElement ChooseCars => driver.FindElement(By.CssSelector(".market - grid__item:nth - child(3) svg"));
+        private  IWebElement CarsInNorway => driver.FindElement(By.PartialLinkText("Biler i Norge)"));
         private  IWebElement ChooseMB => driver.FindElement(By.CssSelector(".list:nth-child(4) > li:nth-child(8) label"));
         private  IWebElement ChooseModelA => driver.FindElement(By.CssSelector(".u-ml16 > li:nth-child(2) font > font"));
         private  IWebElement EnterYearFrom => driver.FindElement(By.CssSelector("form:nth-child(15) .form-grid__unit:nth-child(1) input"));
         private  IWebElement EnterYearTo => driver.FindElement(By.CssSelector("form:nth-child(15) .u-ph0 input"));
         private  IWebElement ChooseCombi5Door => driver.FindElement(By.CssSelector(".list:nth - child(33) > li:nth - child(1) label"));
         private  IWebElement ClickSearch => driver.FindElement(By.CssSelector("form:nth-child(15) .button"));
-        public  IWebElement AddAdConcentCookies => driver.FindElement(By.PartialLinkText("Jeg forstår"));
-   
+        private SelectElement SortByResults1 => new SelectElement(driver.FindElement(By.Id("search-sorter")));
+
+
 
         public FinnNorgePage(IWebDriver webDriver) : base(webDriver) { }
 
@@ -31,33 +34,26 @@ namespace Final.Page
             return this;
         }
 
-        public FinnNorgePage AddAdConcentCookiess()
+        public FinnNorgePage AddAdConcentCookies()
         {
-            driver.Manage().Cookies.AddCookie(new Cookie(
+            Cookie myCookie = new Cookie(
 
                "s_sq",
                "%5B%5BB%5D%5D",
-               "/",
                ".finn.no",
+               "/",
                   DateTime.Now.AddDays(5)
-               ));
+               );
 
+            driver.Manage().Cookies.AddCookie(myCookie);
 
             driver.Navigate().Refresh();
             return this;
 
         }
 
-        public FinnNorgePage AcceptCookies()
-        {
-            AddAdConcentCookies.Click();
-            return this;
-        }
-
-
         public  FinnNorgePage ChooseVehicles()
         {
-           // var wait = GetWait(7);
             ChooseCars.Click();
 
             return this;                           
@@ -79,9 +75,9 @@ namespace Final.Page
         }
 
         public  FinnNorgePage SelectModel()
-        {
+          {
             if (!ChooseModelA.Selected)
-                ChooseModelA.Click();
+               ChooseModelA.Click();
 
             return this;
         }
@@ -115,6 +111,11 @@ namespace Final.Page
             return this;
 
         }
-
+        public FinnNorgePage SortByElements(SortByResults sortByResults)
+        {
+            int buttonValue = Convert.ToInt32(sortByResults);
+            SortByResults1.SelectByValue(buttonValue.ToString());
+            return this;
+        }
     }
 }

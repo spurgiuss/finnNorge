@@ -58,9 +58,11 @@
     <Compile Include="Drivers\AllDrivers.cs" />
     <Compile Include="PageBase.cs" />
     <Compile Include="Page\FinnNorgePage.cs" />
+    <Compile Include="Page\SortBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Tests\FinnNorgeTest.cs" />
+    <Compile Include="Tools\MyScreenshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
